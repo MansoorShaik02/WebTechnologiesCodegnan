@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Application Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 50%;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .form-div {
+        margin-bottom: 15px;
+      }
+      .form-div label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      .form-div input,
+      .form-div select,
+      .form-div textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .form-div textarea {
+        resize: vertical;
+      }
+      .form-div button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background: #5cb85c;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .form-div button:hover {
+        background: #4cae4c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Job Application Form</h2>
+      <form>
+        <div class="form-div">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" required />
+        </div>
+        <div class="form-div">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="form-div">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required />
+        </div>
+        <div class="form-div">
+          <label for="position">Position Applying For</label>
+          <select id="position" name="position" required>
+            <option value="">Select Position</option>
+            <option value="softwareEngineer">Software Engineer</option>
+            <option value="dataScientist">Data Scientist</option>
+            <option value="productManager">Product Manager</option>
+            <option value="designer">Designer</option>
+          </select>
+        </div>
+        <div class="form-div">
+          <label for="resume">Upload Resume</label>
+          <input
+            type="file"
+            id="resume"
+            name="resume"
+            accept=".pdf,.doc,.docx"
+            required
+          />
+        </div>
+        <div class="form-div">
+          <label for="coverLetter">Cover Letter</label>
+          <textarea
+            id="coverLetter"
+            name="coverLetter"
+            rows="6"
+            required
+          ></textarea>
+        </div>
+        <div class="form-div">
+          <button type="submit">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
