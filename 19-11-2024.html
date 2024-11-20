@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Embed YouTube Video and Audio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="video">
+        <h2>YouTube Video</h2>
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/watch?v=_wQF2aW6_CE"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="audio">
+        <h2>Audio File</h2>
+        <audio controls>
+          <source src="audio_file.mp3" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+        <embed
+          src="./Lorem_ipsum.pdf"
+          width="500"
+          height="375"
+          type="application/pdf"
+        />
+        <object
+          id="myPdf"
+          type="application/pdf"
+          data="./Lorem_ipsum.pdf"
+          width="600"
+          height="1000"
+        >
+          Unable to open the PDF file.
+        </object>
+        <iframe
+          width="1478"
+          height="653"
+          src="https://www.youtube.com/embed/Jlv3yJsd4PA"
+          title="This New Voxel Game Is So Much Fun - Lay Of The Land"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </body>
+</html>
