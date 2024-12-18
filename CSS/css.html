@@ -3,17 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/CSS/css.css" />
-    <title>Document</title>
+    <title></title>
   </head>
-  <style>
-    .text2 {
-      color: green;
-    }
-  </style>
   <body>
-    <p style="color: red">This is color red inline css</p>
-    <p class="text2">This is text 2</p>
-    <p class="externalcsss">External css</p>
+    <div>
+      <button id="addButton">Add Item</button>
+    </div>
+    <div id="itemContainer"></div>
+
+    <script>
+      document.getElementById("addButton").addEventListener("click", addItem);
+
+      function addItem() {
+        const itemContainer = document.getElementById("itemContainer");
+        const item = document.createElement("div");
+        item.textContent = "Item";
+        
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = function () {
+          itemContainer.removeChild(item);
+        };
+
+        item.appendChild(deleteButton);
+
+        itemContainer.appendChild(item);
+      }
+    </script>
   </body>
 </html>
