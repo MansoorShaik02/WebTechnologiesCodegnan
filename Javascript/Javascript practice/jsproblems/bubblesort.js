@@ -16,5 +16,5 @@ function bblSort(arr) {
     console.log(arr);
 }
 
-var arr = [234, 43, 55, 63, 5, 6, 235, 547];
-bblSort(arr);
+var arr = [50, 12, 55, 33, 1];
+bblSort(arr); 
