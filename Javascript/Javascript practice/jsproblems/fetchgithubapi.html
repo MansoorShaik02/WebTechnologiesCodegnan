@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub User Fetcher</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .user-info {
+        display: none;
+        margin-top: 20px;
+      }
+      .user-info img {
+        width: 100px;
+        border-radius: 50%;
+      }
+      .user-info h2 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>GitHub User Fetcher</h1>
+      <input type="text" id="username" placeholder="Enter GitHub username" />
+      <button onclick="fetchGitHubUser()">Fetch User</button>
+      <div class="user-info" id="user-info">
+        <img id="avatar" src="" alt="User Avatar" />
+        <h2 id="name">Name :</h2>
+        <p id="bio">Bio :</p>
+        <p><span id="repos">Repos:</span></p>
+        <p><span id="followers">followers : </span></p>
+        <p><span id="following">following : </span></p>
+      </div>
+    </div>
+
+    <script>
+      async function fetchGitHubUser() {
+        const username = document.getElementById("username").value;
+        const url = `https://api.github.com/users/${username}`;
+
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("User not found");
+          }
+          const data = await response.json();
+          document.getElementById("avatar").src = data.avatar_url;
+          document.getElementById("name").textContent =
+            data.name || "No name provided";
+          document.getElementById("bio").textContent =
+            `Bio :  ${data.bio}` || "No bio provided";
+          document.getElementById(
+            "repos"
+          ).textContent = `Repos :  ${data.public_repos}`;
+          document.getElementById(
+            "followers"
+          ).textContent = `Followers : ${data.followers}`;
+          document.getElementById(
+            "following"
+          ).textContent = `following : ${data.following}`;
+          document.getElementById("user-info").style.display = "block";
+        } catch (error) {
+          alert(error.message);
+          document.getElementById("user-info").style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -2,33 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=
-    , initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script>
       var productdata = [{ a: 2, b: 2, c: 3 }, 2, 3, 4, 5];
+      function fetchfetch() {
+        setTimeout(fetchProducts, 2000);
+      }
       function fetchProducts() {
-        /*for (let i = 0; i < productdata.length; i++) {
-          let parentclass = document.getElementById("parentclass");
-          childclass = document.createElement("li");
-          childclass.textContent = JSON.stringify(productdata[i]);
-          parentclass.appendChild(childclass);
-        }*/
         productdata.forEach(function (product) {
           let parentclass = document.getElementById("parentclass");
-          childclass = document.createElement("li");
+          let childclass = document.createElement("li");
           childclass.textContent = JSON.stringify(product);
+
+          let removebutton = document.createElement("button");
+          removebutton.textContent = "Delete";
+
+          childclass.appendChild(removebutton);
           parentclass.appendChild(childclass);
+
+          removebutton.addEventListener("click", () => {
+            parentclass.removeChild(childclass);
+          });
         });
       }
     </script>
   </head>
   <body>
     <h1>Product List</h1>
-    <ul id="parentclass"></ul>
-    <button onclick="fetchProducts()">Fetch Products</button>
+    <div id="parentdiv">
+      <ul id="parentclass"></ul>
+    </div>
+    <button onclick="fetchfetch()">Fetch Products</button>
   </body>
 </html>
