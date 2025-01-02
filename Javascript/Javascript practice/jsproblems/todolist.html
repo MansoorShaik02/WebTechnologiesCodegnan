@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced To-Do List</title>
+    <style>
+      /* Global Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+        font-size: 16px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      .dark-mode body {
+        background-color: #121212;
+        color: #fff;
+      }
+      .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      /* Header Styles */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .header button {
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+      .header button:hover {
+        background-color: #0056b3;
+      }
+
+      /* Search Bar */
+      .search-bar {
+        width: 80%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+      }
+
+      /* Todo List Styles */
+      .todo-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .todo-item {
+        background-color: #f9f9f9;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: move;
+      }
+      .todo-item input[type="checkbox"] {
+        margin-right: 10px;
+      }
+      .todo-item button {
+        padding: 5px 10px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .todo-item button:hover {
+        background-color: #c82333;
+      }
+
+      /* Dark Mode Toggle */
+      .dark-mode-toggle {
+        display: flex;
+        align-items: center;
+      }
+      .dark-mode-toggle label {
+        margin-left: 10px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>To-Do List</h1>
+        <div class="dark-mode-toggle">
+          <input type="checkbox" id="darkModeToggle" />
+          <label for="darkModeToggle">Dark Mode</label>
+        </div>
+      </div>
+
+      <input
+        type="text"
+        id="searchBar"
+        class="search-bar"
+        placeholder="Search tasks..."
+      />
+      <ul id="todoList" class="todo-list"></ul>
+
+      <input type="text" id="newTaskInput" placeholder="Add a new task" />
+      <button id="addTaskButton">Add Task</button>
+    </div>
+
+    <script>
+      // To-Do List Application Logic
+      const addTaskButton = document.getElementById("addTaskButton");
+      const newTaskInput = document.getElementById("newTaskInput");
+      const todoList = document.getElementById("todoList");
+      const searchBar = document.getElementById("searchBar");
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+      // Function to render tasks
+      function renderTasks(filteredTasks = tasks) {
+        todoList.innerHTML = ""; // Clear existing list
+        filteredTasks.forEach((task, index) => {
+          const li = document.createElement("li");
+          li.classList.add("todo-item");
+          li.draggable = true;
+          li.innerHTML = `
+          <input type="checkbox" ${
+            task.completed ? "checked" : ""
+          } onclick="toggleTaskCompletion(${index})">
+          <span class="${task.completed ? "completed" : ""}">${task.text}</span>
+          <button onclick="deleteTask(${index})">Delete</button>
+        `;
+          li.setAttribute("data-index", index);
+          li.addEventListener("dragstart", (e) => handleDragStart(e, index));
+          li.addEventListener("dragover", handleDragOver);
+          li.addEventListener("drop", (e) => handleDrop(e, index));
+          todoList.appendChild(li);
+        });
+      }
+
+      // Function to toggle task completion
+      function toggleTaskCompletion(index) {
+        tasks[index].completed = !tasks[index].completed;
+        saveTasks();
+        renderTasks();
+      }
+
+      // Function to delete a task
+      function deleteTask(index) {
+        tasks.splice(index, 1);
+        saveTasks();
+        renderTasks();
+      }
+
+      // Function to add a new task
+      function addNewTask() {
+        const taskText = newTaskInput.value.trim();
+        if (taskText) {
+          tasks.push({ text: taskText, completed: false });
+          newTaskInput.value = "";
+          saveTasks();
+          renderTasks();
+        }
+      }
+
+      // Function to save tasks to localStorage
+      function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      // Search functionality
+      searchBar.addEventListener("input", () => {
+        const query = searchBar.value.toLowerCase();
+        const filteredTasks = tasks.filter((task) =>
+          task.text.toLowerCase().includes(query)
+        );
+        renderTasks(filteredTasks);
+      });
+
+      // Dark Mode functionality
+      darkModeToggle.addEventListener("change", () => {
+        if (darkModeToggle.checked) {
+          document.body.classList.add("dark-mode");
+        } else {
+          document.body.classList.remove("dark-mode");
+        }
+      });
+
+      // Handle drag-and-drop functionality
+      let draggedTaskIndex = null;
+
+      function handleDragStart(e, index) {
+        draggedTaskIndex = index;
+      }
+
+      function handleDragOver(e) {
+        e.preventDefault();
+      }
+
+      function handleDrop(e, targetIndex) {
+        e.preventDefault();
+        const draggedTask = tasks[draggedTaskIndex];
+        tasks.splice(draggedTaskIndex, 1);
+        tasks.splice(targetIndex, 0, draggedTask);
+        saveTasks();
+        renderTasks();
+      }
+
+      // Event listener for adding a new task
+      addTaskButton.addEventListener("click", addNewTask);
+
+      // Initial Render
+      renderTasks();
+    </script>
+  </body>
+</html>
